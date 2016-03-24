@@ -1,5 +1,6 @@
 // variable: checkingAmount
 // variable: savingsAmount
+//Branched!
 
 var checkingAmount = 0;
 var savingsAmount = 0;

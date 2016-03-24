@@ -40,7 +40,10 @@ function withdrawMoneySavings() {
   var textBox = parseInt(document.querySelector("#savingsAmount").value);
   if (textBox <= savingsAmount){
     savingsAmount -= textBox;
-  };
+  }
+  else {
+    alert("Go ask Dad.  Click OK.");
+  }
   el = document.querySelector("#savingsBalanceDiv");
   el.innerHTML = "$" + savingsAmount;
   saveZero();
@@ -54,15 +57,20 @@ function withdrawMoneyChecking() {
   // side effect: update display
   // return: account balance
   var textBox = parseInt(document.querySelector("#checkingAmount").value);
-  if (textBox <= checkingAmount){
+  if (textBox <= checkingAmount){  // This happens if there is enough to withdraw.
     checkingAmount -= textBox;
   }
   else if (textBox > checkingAmount && textBox <= savingsAmount + checkingAmount){
-    textBox -= checkingAmount;
+    textBox -= checkingAmount;    // This happens if the savings account can help.
     checkingAmount = 0;
     savingsAmount -= textBox;
+    alert("Be careful.  Taking extra cash from savings now.");
     el = document.querySelector("#savingsBalanceDiv");
     el.innerHTML = "$" + savingsAmount;
+    saveZero();
+  }
+  else {
+    alert("Go ask Dad.  Click OK.");  // This happens if you're BROKE.
   }
   el = document.querySelector("#checkingBalanceDiv");
   el.innerHTML = "$" + checkingAmount;

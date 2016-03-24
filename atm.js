@@ -61,13 +61,18 @@ function withdrawMoneyChecking() {
     checkingAmount -= textBox;
   }
   else if (textBox > checkingAmount && textBox <= savingsAmount + checkingAmount){
-    textBox -= checkingAmount;    // This happens if the savings account can help.
-    checkingAmount = 0;
-    savingsAmount -= textBox;
-    alert("Be careful.  Taking extra cash from savings now.");
-    el = document.querySelector("#savingsBalanceDiv");
-    el.innerHTML = "$" + savingsAmount;
-    saveZero();
+    var r = confirm("Are you sure you want to take extra cash from savings?");
+    if (r) {
+      textBox -= checkingAmount;    // This happens if the savings account can help.
+      checkingAmount = 0;
+      savingsAmount -= textBox;
+      alert("Be careful.  Taking extra cash from savings now.");
+      el = document.querySelector("#savingsBalanceDiv");
+      el.innerHTML = "$" + savingsAmount;
+      saveZero();
+    }
+    else {
+    }
   }
   else {
     alert("Go ask Dad.  Click OK.");  // This happens if you're BROKE.

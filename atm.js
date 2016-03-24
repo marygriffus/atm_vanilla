@@ -14,6 +14,7 @@ function depositMoneyChecking() {
   checkingAmount += textBox;
   el = document.querySelector("#checkingBalanceDiv");
   el.innerHTML = ("$" + checkingAmount);
+  checkZero();
   return checkingAmount;
 }
 
@@ -26,6 +27,7 @@ function depositMoneySavings() {
   savingsAmount += textBox;
   el = document.querySelector("#savingsBalanceDiv");
   el.innerHTML = ("$" + savingsAmount);
+  saveZero();
   return savingsAmount;
 }
 
@@ -36,9 +38,12 @@ function withdrawMoneySavings() {
   // side effect: update display
   // return: account balance
   var textBox = parseInt(document.querySelector("#savingsAmount").value);
-  savingsAmount -= textBox;
+  if (textBox <= savingsAmount){
+    savingsAmount -= textBox;
+  };
   el = document.querySelector("#savingsBalanceDiv");
   el.innerHTML = "$" + savingsAmount;
+  saveZero();
   return savingsAmount;
 }
 
@@ -49,9 +54,19 @@ function withdrawMoneyChecking() {
   // side effect: update display
   // return: account balance
   var textBox = parseInt(document.querySelector("#checkingAmount").value);
-  checkingAmount -= textBox;
+  if (textBox <= checkingAmount){
+    checkingAmount -= textBox;
+  }
+  else if (textBox > checkingAmount && textBox <= savingsAmount + checkingAmount){
+    textBox -= checkingAmount;
+    checkingAmount = 0;
+    savingsAmount -= textBox;
+    el = document.querySelector("#savingsBalanceDiv");
+    el.innerHTML = "$" + savingsAmount;
+  }
   el = document.querySelector("#checkingBalanceDiv");
   el.innerHTML = "$" + checkingAmount;
+  checkZero();
   return checkingAmount;
 }
 
@@ -67,10 +82,28 @@ withdrawCheckingButton.addEventListener("click", withdrawMoneyChecking);
 depositSavingsButton.addEventListener("click", depositMoneySavings);
 withdrawSavingsButton.addEventListener("click", withdrawMoneySavings);
 
-//  pulls input from text field
-//  the event listens for "click"
-//  calls depositMoney or withdrawMoney function
-//  specifies the account being affected
+function checkZero(){
+  if (checkingAmount === 0){
+    el = document.querySelector("#checkingBalanceDiv")
+    el.classList.add("zero");
+  }
+  else {
+    el = document.querySelector("#checkingBalanceDiv")
+    el.classList.remove("zero")
+  }
+}
+
+function saveZero(){
+  if (savingsAmount === 0){
+    el = document.querySelector("#savingsBalanceDiv")
+    el.classList.add("zero");
+  }
+  else {
+    el = document.querySelector("#savingsBalanceDiv")
+    el.classList.remove("zero")
+  }
+}
+// Overdraft protection
 //
-//
-// Take input from text field
+//If the withdrawal amount is greater than what's left in the checking account, it needs to draw from savings.
+//If it
